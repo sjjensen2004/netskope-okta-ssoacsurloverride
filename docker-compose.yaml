@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  netskope-acsurloverride:
+    build: .
+    env_file:
+      - ./.env/acsurl.env
+    volumes:
+      - ./logs:/app/logs

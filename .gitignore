@@ -1,3 +1,4 @@
-request.log
 __pycache__
-_test.py
+_test.env
+logs/*
+env

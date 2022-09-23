@@ -1,17 +1,27 @@
-from _config import *
 import requests
 import logging
 import json
+import os
+
+# Grab env vars 
+ENDPOINT = os.environ.get("ENDPOINT")
+TOKEN = os.environ.get("TOKEN")
+NETSKOPE_ACS_URL = os.environ.get("NETSKOPE_ACS_URL")
+OKTA_APP = os.environ.get("OKTA_APP")
 
 # Setup the logger
-logging.basicConfig(format='%(asctime)s - %(message)s', filename='request.log', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s - %(message)s', filename='../logs/request.log', level=logging.DEBUG)
+
+# Spit logs to console
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
 logging.getLogger().addHandler(console)
 logger = logging.getLogger()
 
+# Format the URL
 URL = f"{ENDPOINT}/api/v1/apps/{OKTA_APP}"
 
+# Create the request headers
 HEADERS = {
     "Authorization": f"SSWS {TOKEN}",
     "Content-Type": "application/json",
@@ -21,15 +31,20 @@ HEADERS = {
 
 def okta_get_payload():
     """Grabs teh current Okta app configuraiton and returns the json payload """
-    response = requests.get(url=URL, headers=HEADERS)
-    if response.status_code != 200:
-        logger.error(f"Failed: Check the URL and/or TOKEN in _config.py\n\n{response.content}")
+    try:
+        response = requests.get(url=URL, headers=HEADERS)
+        if response.status_code != 200:
+            logger.error(f"Failed: Check the URL and/or TOKEN in _config.py\n\n{response.content}")
+            exit()
+        else:
+            return response.json()
+    except requests.exceptions.MissingSchema as e:
+        logger.error(e)
         exit()
-    else:
-        return response.json()
 
 
-def okta_ssoacsurloverride(data):
+
+def okta_ssoacsurloverride(data: str) -> str:
     """Updates the Okta app configuration with the data payload"""
     okta_replace = requests.put(
         url=URL, headers=HEADERS, data=json.dumps(data))
