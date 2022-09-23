@@ -1,4 +1,4 @@
 __pycache__
 _test.env
-logs/*
+./logs/*
 env
