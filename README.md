@@ -2,7 +2,7 @@
 
 ## Basic
 
-Modify the environmental variables in `.env` to reflect your environment:
+Modify the environmental variables in `.env/acsurl.env` to reflect your environment:
 
 - TOKEN="your-token-from-okta-here"
 - ENDPOINT="your-okta-url-here"
