@@ -1,4 +1,4 @@
-# The detailed documentation for this script is internal 
+# The detailed documentation for this script are internal to Netskope
 
 ## Basic
 
